@@ -1,0 +1,107 @@
+Rugby User Manual
+
+  Authors: Maarten Koopmans, Henrik Mikael Kristensen
+  Updated: 27-Jan-2007/20:25:23+1:00
+
+===Introduction
+
+Rugby is an easy to use RPC (Remote Procedure Call) system for REBOL.
+
+It can be downloaded from here:
+
+http://www.hmkdesign.dk/rebol/rugby/rugby-X.zip
+
+Rugby basically extends functions that you implement like normally in REBOL so that they can be evaluated across a network connection.
+
+Example:
+
+  add-function: func [a b] [a + b]
+
+  serve [add-function]
+
+This is it! Rugby now waits for a network connection and will execute <tt>add-function</tt> when asked for it.
+
+Rugby also has a cooperative threading engine to allow multiple jobs to be executed at the same time.
+
+===Usage
+
+---Installation
+
+Rugby consists of several smaller source files. As an early start, it's enough it include <tt>rugby.r</tt> in your source code.
+
+  do %rugby.r
+
+Rugby.r contains both server and client code, so you should use this file at both ends.
+
+---Configuration
+
+Out of the box, Rugby uses some standard configuration.
+
+---configure-rugby
+
+This is a dialect, which is parsed by Rugby into a configuration.
+
+---Creating a server
+
+Creating a server is very easy. Create a block of words with the functions you wish to serve. Then use the <tt>serve</tt> function to start the server.
+
+  a: does [something]
+  b: does [something else]
+  c: does [something different]
+
+  serve [a b c]
+
+When started, Rugby simply waits for connections. To stop the server, press Escape. In order to start it again.
+
+<tt>Serve</tt> has a few options:
+
++++secure
+
+Serving securely. All requests and responses are encrypted using RSA encryption. This is only available in REBOL/Pro.
+
+Note that at the current time, you can't deny requests from clients who wish to connect to it without security.
+
++++with
+
+Specifies the port you use for serving
+
+---Creating a client
+
+A client can connect to a server
+
++++rexec
+
+
+
+---Asynchronous Operation
+
+Rugby can do asynchronous operation, using a built-in cooperative threading engine. It means you can do a function, and then not wait immediately for it to return. The operation is <b>non-blocking</b>. This allows you to perform other functions in the meantime and when you see fit, you can either poll for results or wait for the result. There are various methods for async operation:
+
+---do-every
+
+This performs an operation at a given time interval. Example:
+
+  do-every 0:5:0 [
+    flush-cache
+  ]
+
+When the server is started, the function <tt>flush-cache</tt> will be called.
+
+You can stack multiple scheduled operations like this:
+
+
+
+---do-after
+
+This performs an operation after a specified amount of time. Example:
+
+  do-after 0:10:0 [
+    quit
+  ]
+
+---add-thread
+
+This adds a thread.
+
+===Known Issues
+
