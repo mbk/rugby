@@ -1,3 +1,7 @@
+2016: Rugby revived for ARMv7 RRBOL 2 and 64 bit Linux REBOL 2.
+MAJOR NEW FEATURE: adding code dynamically 
+
+
 Works the way rugby always works, new docs will follow next week.
 -do-after time code-block  ; a timer mezzanine when in the Rugby event loop
 
